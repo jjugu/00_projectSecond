@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/profile.css">
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+	
+<div class="outer">		
+	<div th:replace="main/navbar.html"></div>
+	
+	<div class="boxing">
+		<table id="listArea" align="center">
+			<tr><th colspan="6">교사 목록</th></tr>
+			<tr>
+				<th>교번</th>
+				<th>이름</th>
+				<th>연락처</th>
+				<th colspan="3">교습지역</th>
+			</tr>
+			<tr th:each="profile : ${profileList}">
+				<td th:text="${profile.teacherNo}"></td>
+				<td th:text="${profile.teacherName}"></td>
+				<td th:text="${profile.teacherPhone}"></td>
+				<th:block th:if="${profile.areaList.size == 0}">
+					<td th:text="없음"></td>
+					<td th:text="없음"></td>
+					<td th:text="없음"></td>
+				</th:block>
+				<th:block th:if="${profile.areaList.size == 1}">
+					<td th:text="${profile.areaList[0].colunmNo}"></td>
+					<td th:text="없음"></td>
+					<td th:text="없음"></td>
+				</th:block>
+				<th:block th:if="${profile.areaList.size == 2}">
+					<td th:text="${profile.areaList[0].colunmNo}"></td>
+					<td th:text="${profile.areaList[1].colunmNo}"></td>
+					<td th:text="없음"></td>
+				</th:block>
+				<th:block th:if="${profile.areaList.size == 3}">
+					<td th:text="${profile.areaList[0].colunmNo}"></td>
+					<td th:text="${profile.areaList[1].colunmNo}"></td>
+					<td th:text="${profile.areaList[2].colunmNo}"></td>
+				</th:block>			
+			</tr>
+		</table>
+		
+		<div th:replace="profile/paging.html"></div>
+		
+		<!-- 검색 폼 -->
+		<div class="search-area" align="center">
+			<form id="loginForm" action="/profile/searchList" method="get" style="display: inline-block">
+					<select th:with="searchCondition = ${selectCriteria.searchCondition}" id="searchCondition" name="searchCondition">
+						<option value="teacherNo" th:selected="${ searchCondition } == 'teacherNo'">교번</option>
+						<option value="teacherName" th:selected="${ searchCondition } == 'teacherName'">이름</option>
+					</select> 
+				<input type="hidden" name="currentPage" value="1">
+				<input type="search" id="name" name="searchValue" th:value="${selectCriteria.searchValue}">
+				<button class="btn btn-bs" type="submit">검색</button>
+			</form>
+		</div>
+	</div>
+</div>	
+	<script type="text/javascript">
+		/* 삭제 성공 시 안내 메세지 */
+		const successMessage = "[[${successMessage}]]";
+		successMessage && alert(successMessage);
+		
+		$(function(){
+			$("#listArea td").hover(function(){
+				$(this).parent().css({"background" : "#d9d9d9", "cursor" : "pointer"});
+			},function(){
+				$(this).parent().css("background", "white");
+			}).click(function(){
+				const no = $(this).parent().children(":eq(0)").text();
+				location.href = "detail/" + no;
+			})
+		})
+		
+		/* 검색 결과가 없을 경우 안내 메세지 */
+		function listInfo(){
+			$.ajax({
+				url: "/profile/searchList",
+				success: function(data){
+					const $list = document.querySelectorAll("#listArea td");
+					// console.log($list);
+					const listAmount = $list.length / 6;
+					if(listAmount == 0) {alert("검색 결과가 없습니다.");}
+					// 검색하지 않을 경우에도 한 화면에 뿌려지는 개수가 출력됨 (보완 필요)
+					// else {alert(`${listAmount}개의 검색결과가 있습니다.`);}
+				}, 
+				error: function(error){
+					console.log(error);				  
+				}
+			});
+		};
+		listInfo();
+	</script>
+</body>
+</html>

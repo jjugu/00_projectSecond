@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/paperSearch.css">
+<style>
+
+
+</style>
+
+
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+		
+	<div th:replace="main/navbar.html"></div>
+	
+	<table align="center" border="1">
+		<tr>
+			<th>학습지번</th>
+			<th>이름</th>
+			<th>난이도</th>
+			<th>과목명</th>
+		</tr>
+		<tr th:each="paper : ${ paperList }">
+			<td><a th:href="${ paper.paperNo }">[[${ paper.paperNo }]]</a></td>
+			<td><a th:href="${ paper.paperNo }">[[${ paper.paperName }]]</a></td>
+			<td><a th:href="${ paper.paperNo }">[[${ paper.paperDiff }]]</a></td>
+			<td><a th:href="${ paper.paperNo }">[[${ paper.paperSub }]]</a></td>
+		</tr>
+	</table>
+
+    <div th:replace="paper/paging.html"></div>
+
+	<!-- 검색 폼 -->
+	<div class="search-area" align="center">
+		<form id="loginForm" action="/paper/search" method="get" style="display: inline-block">
+				<select th:with="searchCondition = ${selectCriteria.searchCondition}" id="searchCondition" name="searchCondition">
+					
+					<option value="paperName" th:selected="${ searchCondition } == 'paperName'">이름</option>
+					
+
+				</select> 
+			<input type="hidden" name="currentPage" value="1">
+			<input type="search" id="name" name="searchValue" th:value="${selectCriteria.searchValue}">
+			<button class="btn btn-bs" type="submit">검색</button>
+		</form>
+	</div>
+	
+</body>
+</html>

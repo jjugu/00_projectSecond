@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+
+table {
+	width : 1250px;
+	border-spacing: 0px;
+}
+
+th  {
+	width: 400px;
+	height: 50px;
+	border: 1px solid #d9d9d9;
+	background-color: rgb(192, 192, 192);
+	}
+ 
+td  {
+	width: 600px;
+	height: 50px;
+	border: 1px solid #d9d9d9;
+	background-color: rgb(255, 255, 225);
+	font-size: 16px;
+	}

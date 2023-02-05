@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org"><!-- 타임리프 활용하기(네임스키마 문법 추가) -->
+<head>
+<meta charset="UTF-8">	
+<title>IO푹곡 학생 검색 기능</title>
+</head>
+<body>
+	<div th:replace="common/header.html"></div>
+	<h3 align="center">학생 검색</h3>
+	
+	<button onclick="location.href='/student/search'">학생 검색</button>
+	<button onclick="location.href='/student/regist'">학생 등록</button>
+	<button onclick="location.href='/student/modify'">학생 수정</button>
+	
+	<table align="center" border="1">
+		<tr>
+			<th>학번</th>
+			<th>이름</th>
+			<th>아이디</th>
+			<th>주소</th>
+		</tr>
+		<tr th:each="student : ${ studentList }">
+			<td><a th:href="${ student.studentNo }">[[${ student.studentNo }]]</a></td>
+			<td><a th:href="${ student.studentNo }">[[${ student.studentName }]]</a></td>
+			<td><a th:href="${ student.studentNo }">[[${ student.studentId }]]</a></td>
+			<td><a th:href="${ student.studentNo }">[[${ student.studentAddress }]]</a></td>
+		</tr>
+	</table>
+
+    <div th:replace="student/paging.html"></div>
+
+	<!-- 검색 폼 -->
+	<div class="search-area" align="center">
+		<form id="loginForm" action="/student/search" method="get" style="display: inline-block">
+				<select th:with="searchCondition = ${selectCriteria.searchCondition}" id="searchCondition" name="searchCondition">
+					<option value="studentName" th:selected="${ searchCondition } == 'studentName'">이름</option>
+				</select> 
+			<input type="hidden" name="currentPage" value="1">
+			<input type="search" id="name" name="searchValue" th:value="${selectCriteria.searchValue}">
+			<button class="btn btn-bs" type="submit">검색</button>
+		</form>
+	</div>
+	
+</body>
+</html>

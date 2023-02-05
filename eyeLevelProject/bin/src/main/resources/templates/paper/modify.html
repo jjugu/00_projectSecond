@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<h3 align="center">학습지 정보 수정</h3>
+	<form action="/paper/modify" method="post" align="center">
+		<label>학습지 코드 : </label><input type="number" name="paperNo">
+		<label>바꿀 학습지명 : </label><input type="text" name="paperName"><br>
+		<input type="submit" value="전송">
+	</form>
+</body>
+</html>

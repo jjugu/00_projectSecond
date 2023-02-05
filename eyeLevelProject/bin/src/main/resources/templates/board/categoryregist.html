@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>교사 교류 게시판 글쓰기</title>
+</head>
+<body>
+		<div th:replace="main/header.html"></div>
+		
+		<div th:replace="main/navbar.html"></div>
+		
+		<form action="/board/categoryregist" method="post" align="center">
+		<table align="center" border="1">
+			<h3 align="center">글쓰기</h3>
+			<tr>
+				<td>제목</td>
+				<td><input type="text" name="boardName" placeholder="제목을 입력해주세요."></td>
+			</tr>
+			<tr>
+				<td>내용</td>
+				<td><textarea name="boardContent" placeholder="내용을 입력해주세요."></textarea>
+				</td>
+			</tr>
+			<label>게시판을 선택해 주세요</label>
+			<select name="categoryCode" id="categoryCode">
+				<option value="CTG01">지역 정보</option>
+				<option value="CTG02">학습 정보</option>
+				<option value="CTG03">수업 기술</option>
+			</select>
+			<br>
+			<input type="submit" value="저장">
+			</form>
+		</table>
+</body>
+</html>

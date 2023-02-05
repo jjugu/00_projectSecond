@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/question.css">
+<title>Q&A 게시판</title>
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+
+<div class="outer">
+	<div th:replace="main/navbar.html"></div>
+	
+	<div class="boxing">
+		<table id="listArea" align="center">
+			<tr>
+				<th colspan="5">
+					Q&A 게시판
+					<!-- 학생인 경우에만 글쓰기 버튼 노출 -->
+					<th:block sec:authorize="!hasRole('ADMIN') and !hasRole('TEACHER') and hasRole('STUDENT')">
+					<div align="right" style="margin-right: 20px;">
+					<button onclick="location.href='/question/regist'" class="btn-regist">글쓰기</button>
+					</div>
+					</th:block>
+				</th>
+			</tr>
+			<tr>
+				<th>게시글 번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일자</th>
+				<th>답변여부</th>
+			</tr>
+			<th:block th:each="question : ${questionList}">
+				<tr>
+					<td th:text="${question.questionNo}"></td>
+					<td th:text="${question.questionName}"></td>
+					<td th:text="${question.student.studentName}"></td>
+					<td th:text="${question.questionDate}"></td>
+					<td th:switch="${question.questionCom}">
+                 		<span th:case="Y"><img src="http://lightin9.speedgabia.com/90_koodoyeon/team_project_eyelevel/test_file/ok.png" height="30px"/></span>
+                  		<span th:case="N"><img src="http://lightin9.speedgabia.com/90_koodoyeon/team_project_eyelevel/test_file/no.png" height="30px"/></span>
+						<!-- <span th:case="Y" style="background-color:rgb(255,0,0); color:rgb(255,255,255)">답변완료</span> -->
+						<!-- <span th:case="N">답변미완</span> -->
+					</td>
+				</tr>
+			</th:block>
+		</table>
+	
+	    <div th:replace="question/questionpaging.html"></div>
+	
+		<!-- 검색 폼 -->
+		<div class="search-area" align="center">
+			<form id="loginForm" action="/question/searchList" method="get" style="display: inline-block">
+					<select th:with="searchCondition = ${selectCriteria.searchCondition}" id="searchCondition" name="searchCondition">
+						<option value="questionName" th:selected="${ searchCondition } == 'questionName'">제목</option>
+						<option value="questionContent" th:selected="${ searchCondition } == 'questionContent'">내용</option>
+					</select> 
+				<input type="hidden" name="currentPage" value="1">
+				<input type="search" id="name" name="searchValue" th:value="${selectCriteria.searchValue}">
+				<button class="btn btn-bs" type="submit" id="btn-bs">검색</button>
+			</form>
+		</div>
+	</div>
+</div>
+	
+	<script>
+		/* 게시글 등록 성공 시 메세지 */
+		const successMessage = "[[${ successMessage }]]";
+		successMessage && alert(successMessage);
+		
+		/* 삭제 성공 시 안내 메세지 */
+		const deleteSuccessMessage = "[[${deleteSuccessMessage}]]";
+		deleteSuccessMessage && alert(deleteSuccessMessage);	
+
+		/* 게시글 목록 클릭 시 상세페이지 이동 */
+		$(function(){
+			$("#listArea td").hover(function(){
+				$(this).parent().css({"background" : "#d9d9d9", "cursor" : "pointer"});
+			},function(){
+				$(this).parent().css("background", "white");
+			}).click(function(){
+				const questionNo = $(this).parent().children(":eq(0)").text();
+				location.href = "detail/" + questionNo;
+			})
+		})
+		
+		/* 검색 결과가 없을 경우 안내 메세지 */
+		function listInfo(){
+			$.ajax({
+				url: "/question/searchList",
+				success: function(data){
+					const $list = document.querySelectorAll("#listArea td");
+					// console.log($list);
+					const listAmount = $list.length / 5;
+					if(listAmount == 0) {alert("검색 결과가 없습니다.");}
+					// 검색하지 않을 경우에도 한 화면에 뿌려지는 개수가 출력됨 (보완 필요)
+					// else {alert(`${listAmount}개의 검색결과가 있습니다.`);}
+				}, 
+				error: function(error){
+					console.log(error);				  
+				}
+			});
+		};
+		listInfo();
+	</script>
+</body>
+</html>

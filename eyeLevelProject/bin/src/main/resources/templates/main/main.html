@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- principal를 사용할려면 설정해줘야 하는 스키마 -->
+<head>
+<meta charset="UTF-8">
+<title>OI푹곡</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+	
+	<div th:replace="main/header.html"></div>
+	
+	
+	<!-- <h1 align="center" th:text="${#authentication.principal}"></h1> -->  
+	<div>
+		<!-- 인증된 경우(로그인 후) -->
+		<th:block sec:authorize="isAuthenticated()">	
+			<div th:replace="main/navbar.html"></div>
+			<div class="back ground">
+			</div>
+			
+		</th:block>
+	</div> 
+	
+	<div id="button">
+		<th:block sec:authorize="isAnonymous()">
+			<button onclick="location.href='/menu/list'">강사소개</button>
+			<button onclick="location.href='/menu/list'">학습과목</button>
+			<button onclick="location.href='/counseling/regist'">상담및계약</button>
+			<button onclick="location.href='/menu/list'">고객센터</button>
+		
+		<div>
+		<div class="back1 ground1">
+			</div>
+			</th:block>
+		</div>
+		
+</body>
+</html>

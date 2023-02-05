@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/business.css">
+
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+	<div th:replace="main/navbar.html"></div>
+	</script>
+	
+	<button onclick="location.href='/business/search'">학습현황 검색 조회</button>
+	<button onclick="location.href='/business/regist'">학습현황 신규 입력</button>
+	<button onclick="location.href='/paper/list'">학습지 전체 조회</button>
+	
+
+		<h3 align="center">학습현황 전체 조회</h3>
+	<table align="center" border="1">
+		<tr>
+			<th>학습일자</th>
+			<th>학번</th>
+			<th>메모</th>
+			<th>교번</th>
+			<th>학습지코드</th>		
+		</tr>
+		<tr th:each="business : ${ businessList }">
+			<td th:text="${ business.businessDate }"></td>
+			<td th:text="${ business.studentNo }"></td>
+			<td th:text="${ business.businessMemo }"></td>
+			<td th:text="${ business.teacherNo }"></td>
+			<td th:text="${ business.paperNo }"></td>
+		</tr>
+	</table>
+</body>
+</html>

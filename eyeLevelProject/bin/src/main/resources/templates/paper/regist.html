@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+		
+	<div th:replace="main/navbar.html"></div>
+
+</head>
+
+<script>
+	const successMessage = "[[${ registSuccessMessage }]]";	
+	if(successMessage){alert(successMessage);
+	}
+</script>
+
+	
+	<form action="/paper/regist" method="post" align="center">	<!-- 부트에서는 default로 잡혀있는 최상위 루트가 '/'다. -->
+		<label>학번 : </label><input type="text" name="paperNo"><br>
+		<label>이름 : </label><input type="text" name="paperName"><br>
+		<label>난이도 : </label><input type="text" name="paperDiff"><br>
+		<label>과목명 : </label><input type="text" name="paperSub"><br>
+		
+		
+		
+		<input type="submit" value="전송">
+	</form>
+	
+	<button id="insert-button">Insert</button>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/student.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<style>
+textarea:focus {outline: none;}
+textarea {resize: none;}
+input:focus {outline: none;}
+input {
+border: none;
+}
+</style>
+
+
+</head>
+<body>
+   <div th:replace="main/header.html"></div>
+      
+   <div th:replace="main/navbar.html"></div>
+   
+   <h3 align="center">상담 등록</h3>
+      <form action="/counseling/regist" method="post" align="center">
+         <table align="center" border="1">
+         <tr>
+            <th>상담 과목</th><td>
+            <th:block id="categoryName">
+                 <div>
+                   <input type="radio" value="1" name="categoryNo">
+                    <label>국어</label>
+                   <input type="radio" value="2" name="categoryNo">
+                   <label>영어</label>
+                   <input type="radio" value="3" name="categoryNo">
+                   <label>수학</label>
+                 </div>
+            </th:block>
+
+            </td>
+            <th>연락처</th><td><input type="text" name="counselingPhone" style="width: 99%; height: 99%;  font-size: 16px;" autofocus></td>
+         </tr>
+         <tr>
+            <th>상담 내용</th>
+            <td colspan="3">
+            <textarea name="counselingSt" style="width: 99%; height: 300px; border: none; font-size: 16px;">
+            </textarea>
+            </td>
+         </tr>
+         
+         </table>
+         <input type="hidden" name="counselingCom" value="N">
+         <input type="submit" value="전송">
+      </form>
+   <script>
+
+     function selectCategory(){
+       $.ajax({
+         url: "/counseling/category",
+         success: function(data){
+           const $categoryName = document.querySelector("#categoryName");
+
+           for(let index in data){
+             $div = document.createElement("div");
+             $radio = document.createElement("input");
+             $radio.type = "radio";
+             $radio.value = data[index].categoryNo;
+             $radio.name = "categoryNo";
+
+             $label = document.createElement("label");
+             $label.textContent = data[index].categoryName;
+
+             $label.appendChild($radio);
+             $div.appendChild($label);
+             $categoryName.appendChild($radioDiv);
+           }
+         }, 
+         error: function(error){
+           console.log(error);              
+         }
+       });
+     };
+     selectCategory();
+   </script>
+
+</body>
+</html>
+
+<!--    <script>
+
+     function selectCategory(){
+       $.ajax({
+         url: "/counseling/category",
+         success: function(data){
+           const $form = document.querySelector("#categoryName");
+
+           for(let index in data){
+             $radioDiv = document.createElement("div");
+             $radio = document.createElement("input");
+             $radio.type = "radio";
+             $radio.value = data[index].categoryNo;
+             $radio.name = "categoryNo";
+
+             $label = document.createElement("label");
+             $label.textContent = data[index].categoryName;
+
+             $label.appendChild($radio);
+             $radioDiv.appendChild($label);
+             $form.appendChild($radioDiv);
+           }
+         }, 
+         error: function(error){
+           console.log(error);              
+         }
+       });
+     };
+     selectCategory();
+   </script> -->

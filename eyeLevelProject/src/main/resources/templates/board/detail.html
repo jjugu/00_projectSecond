@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/board.css">
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+
+<div class="outer">		
+	<div th:replace="main/navbar.html"></div>
+	
+	<div class="boxing">
+		<form id="boardInfo" action="/board/contentModifyAndDelete" method="post" align="center">
+			<table id="boardInfoTable" align="center">
+				<tr>
+					<th><input type="submit" value="삭제" id="btn"></th>
+					<th th:text="${board.boardName}"></th>
+					<th><input type="submit" value="수정" id="btn"></th>
+				</tr>
+				<tr>
+					<td colspan="3" th:text="${board.boardContent}" style="height: 250px;"></td>
+				</tr>
+			</table>
+		</form>
+	
+		<th:block th:each="reply : ${board.replyList}">
+		<form id="replyList" action="/board/replyDelete" method="post" align="center">
+			<table id="replyViewTable" align="center">
+					<tr>
+						<th th:text="${reply.teacherInfo.teacherName}"></th>
+						<th><input type="submit" value="수정" id="btn"></th>
+					</tr>
+					<tr>
+						<td colspan="2" th:text="${reply.content}"></td>
+					</tr>
+					<tr>
+						<td colspan="2" th:text="${reply.replyDate}"></td>
+					</tr>
+			</table>
+		</form>
+		</th:block>
+	
+		<!-- 관리자 로그인 시 댓글 작성은 보이지 않음 -->
+		<th:block sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER') and hasRole('STUDENT')">
+		<form id="replyRegiet" action="/board/replyRegist" method="post" align="center">
+			<table id="replyRegistTable" align="center">
+				<tr>
+					<th th:text="${#authentication.principal.teacherName}"></th>
+					<th><input type="submit" value="등록" id="btn"></th>
+				</tr>
+				<tr>
+					<td colspan="2"><textarea name="content" placeholder="댓글을 입력해주세요." style="height: 150px;"></textarea></td>
+				</tr>
+			</table>
+		</form>
+		</th:block>
+	</div>
+</div>
+	
+	<script type="text/javascript">
+		/* 등록, 수정, 성공 시 안내 메세지 */
+		const successMessage = "[[${successMessage}]]";
+		successMessage && alert(successMessage);	
+	</script>
+</body>
+</html>

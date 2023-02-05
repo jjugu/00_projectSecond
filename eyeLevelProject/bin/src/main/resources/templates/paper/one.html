@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">		
+<title>IO푹곡 학생 상세 조회</title>
+</head>
+<body>
+	<script>
+		const successMessage = "[[${ modifySuccessMessage }]]";	
+		
+		if(successMessage){
+			alert(successMessage);
+		}
+	</script>
+
+		<h3 align="center">학습지 상세 조회</h3>
+	<table align="center" border="1">
+		<tr>
+			<th>학번</th>
+			<th>이름</th>
+			<th>난이도</th>
+			<th>과목명</th>
+			
+			
+		</tr>
+		<tr th:each="paper : ${ paper}">
+			<td th:text="${ paper.paperNo }"></td>
+			<td th:text="${ paper.paperName }"></td>
+			<td th:text="${ paper.paperDiff }"></td>
+			<td th:text="${ paper.paperSub }"></td>
+			
+			
+		</tr>
+		
+	</table>
+</body>
+</html>

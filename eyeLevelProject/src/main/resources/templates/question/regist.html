@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>Q&A 게시판 글쓰기</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/question.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+	<div th:replace="main/navbar.html"></div>
+	<form action="/question/regist" method="post" align="center">
+		<table id="questionRegistTable" align="center" border="1">
+			<tr>
+				<th colspan="2">제목</th>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="text" name="questionName" placeholder="제목을 입력해주세요." style="width: 80%;"></td>
+			</tr>
+			<tr>
+				<th colspan="2">내용</th>
+			</tr>
+			<tr>
+				<td colspan="2" class="registCont"><textarea name="questionContent" placeholder="내용을 입력해주세요."></textarea></td>
+			</tr>
+			<tr>
+				<th>첨부파일</th>
+				<td><input type="file" name="questionFile"></td>
+			</tr>
+		</table>
+		<input type="submit" value="등록" id="btn" class="btn-detail">
+	</form>
+</body>
+</html>

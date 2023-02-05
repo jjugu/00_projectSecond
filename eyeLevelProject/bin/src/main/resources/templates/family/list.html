@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org"><!-- 타임리프 활용하기(네임스키마 문법 추가) -->
+<head>
+<meta charset="UTF-8">		
+<title>IO푹곡 학생 전체 조회</title>
+</head>
+<body>
+	<script>
+		const successMessage = "[[${ registSuccessMessage }]]";	
+		
+		if(successMessage){
+			alert(successMessage);
+		}
+	</script>
+	<div th:replace="common/header.html"></div>
+		<h3 align="center">상담 전체 조회</h3>
+	<table align="center" border="1">
+		<tr>
+			<th>가번</th>
+			<th>관계</th>
+			<th>연락처</th>
+			<th>학번</th>
+			<th>학생 이름</th>
+
+		</tr>
+		<tr th:each="family : ${ familyList }">
+			<td th:text="${ family.familyNo }"></td>
+			<td th:text="${ family.familyRel }"></td>
+			<td th:text="${ family.familyPhone }"></td>
+			<td th:text="${ family.studentNo.studentNo }"></td>
+			<td th:text="${ family.studentNo.studentName }"></td>
+			
+		</tr>
+	</table>
+</body>
+</html>

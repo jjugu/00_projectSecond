@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>비밀번호 수정</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/profile.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+
+	<div th:replace="main/header.html"></div>
+	
+	<div class="boxingPwd">
+		<form action="/profile/modifyPwd" method="post" id="pwdTable" align="center">
+	        <table id="changePwd" class="changePwdTable">
+	            <tr>
+	                <th>기존 비밀번호</th>
+	                <td>
+	                    <input type="password" name="originPw" id="originPw">
+	                </td>
+	            </tr>
+	            <tr>
+	                <th>신규 비밀번호</th>
+	                <td>
+	                	<input type="password" name="newPw" id="newPw"><span id="info"></span>
+	               	</td>
+	            </tr>
+	            <tr>
+	                <th>비밀번호 확인</th>
+	                <td><input type="password" name="checkPw" id="checkPw"></td>
+	            </tr>
+	        </table>
+	        <input type="submit" id="submitBtn" class="submitBtn">
+	    </form>
+	</div>
+	
+    <script>
+		/* 수정 성공 시 안내 메세지 */
+		const successMessage = "[[${successMessage}]]";
+		successMessage && alert(successMessage);
+		
+		/* 수정 실패 시 안내 메세지 */
+		const failedMessage = "[[${failedMessage}]]";
+		failedMessage && alert(failedMessage);
+		
+		/* 신규비번 regexp */
+        const regexp = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/m);
+		const submitBtn = document.getElementById("submitBtn");
+        
+        $(function() {
+            $('#newPw').on("propertychange change keyup paste input keydown",function() {
+                if(!regexp.test($(this).val())) {
+                    info.innerHTML = "";
+                    info.innerHTML += '<p style="color: red; width: 380px;">8자 이상의 영어 대소문자, 숫자를 사용해주세요.</p>';
+                    submitBtn.disabled = true;
+                } else {
+                    submitBtn.disabled = false;
+                    info.innerHTML = "";
+                	info.innerHTML += '<p style="color: blue; width: 380px;">비밀번호 조건에 만족합니다.</p>';
+                }
+            })
+		})
+    </script>
+</body>
+</html>

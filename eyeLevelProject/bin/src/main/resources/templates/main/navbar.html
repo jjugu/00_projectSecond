@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- principal를 사용할려면 설정해줘야 하는 스키마 -->
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/Navbar.css">
+</head>
+<body>
+   <div id="navbar">
+      <!-- principal 안에 ROLE_ADMIN 권한이 있다면 보여질 block -->
+      <th:block sec:authorize="hasRole('ADMIN')">
+         <div id="menuBar">
+            <div class="menu">교사 관리</div>
+            <li class="menuList" onclick="location.href='/profile/searchList'">교사 정보 관리</li>
+            <li class="menuList" onclick="location.href='/profile/regist'">교사 등록</li>
+            <div class="menu">지역 관리</div>
+            <li class="menuList">교습 지역 관리</li>
+            <div class="menu">고객 관리</div>
+            <li class="menuList" onclick="location.href='/student/regist'">학생 등록</li>
+            <li class="menuList" onclick="location.href='/student/search'">고객 정보 관리</li>
+            <li class="menuList" onclick="location.href='/counseling/search'">고객 상담 관리</li>
+            <div class="menu">게시판 관리</div>
+            <li class="menuList" onclick="location.href='/board/category'">교류 게시판 관리</li>
+            <li class="menuList" onclick="location.href='/question/searchList'">질문 게시판 관리</li>
+         </div>
+      </th:block>
+      
+      <!-- <th:block sec:authorize="hasRole('TEACHER')"> -->
+      <th:block sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER') and hasRole('STUDENT')">
+         <div id="menuBar">
+            <div class="menu">HR</div>
+            <!-- 어뗀틱에서 선생 개인정보 받아와서 로케이션에 넣어줘야함 -->
+            <li class="menuList" onclick="location.href='/profile/detail'">개인 정보 관리</li>
+            <div class="menu">일정 관리</div>
+            <li class="menuList" onclick="location.href='/calendar/schedule'">수업 일정 관리</li>
+            <div class="menu">고객 관리</div>
+            <li class="menuList" onclick="location.href='/student/search'">고객 정보 관리</li>
+            <li class="menuList" onclick="location.href='/business/list'">학습 현황 관리</li>
+            <div class="menu">답변 관리</div>
+            <li class="menuList" onclick="location.href='/question/searchList'">질문 게시판</li>
+            <div class="menu">커뮤니티</div>
+            <li class="menuList" onclick="location.href='/board/category'">교류 게시판</li>
+         </div>
+      </th:block>
+      
+      <!-- sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER') and hasRole('STUDENT')" -->
+      <th:block sec:authorize="!hasRole('ADMIN') and !hasRole('TEACHER') and hasRole('STUDENT')">   
+         <div id="menuBar">
+            <div class="menu">마이페이지</div>
+            <li class="menuList" onclick="location.href='/student/personal'">학생 정보 관리</li>
+            <div class="menu">일정 관리</div>
+            <li class="menuList" onclick="location.href='/calendar/schedule'">수업 일정 관리</li>
+            <div class="menu">학습</div>
+            <li class="menuList" onclick="location.href='/question/searchList'">질문하기</li>
+         </div>  
+      </th:block>
+   </div>
+   
+</body>
+</html>

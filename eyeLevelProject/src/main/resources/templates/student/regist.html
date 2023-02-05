@@ -1,0 +1,76 @@
+ <!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        .container {
+          max-width: 500px;
+          margin: 60px auto;
+          text-align: center;
+        }
+        form {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
+        input[type="text"],
+        input[type="email"], 
+        input[type="password"] {
+          width: 60%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          box-sizing: border-box;
+          border: 2px solid #ccc;
+          border-radius: 30px;
+        }
+        input[type="submit"] {
+          width: 20%;
+          background-color: #45a049;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+        }
+        input[type="submit"]:hover {
+          background-color: #BE1E2D;
+        }
+</style>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+</head>
+<body>
+   <div th:replace="main/header.html"></div>
+   <div th:replace="main/navbar.html"></div>
+</head>
+
+   <form action="/student/regist" method="post">
+   <div class="container">
+      <h1>입력사항</h1>
+      <input type="text" placeholder="이름" name="studentName">
+      <input type="text" placeholder="아이디" name="studentId">
+      <input type="text" placeholder="비밀번호" name="studentPw">
+      <input type="text" placeholder="성별" name="studentGender">
+      <input type="text" placeholder="주소" name="studentAddress">
+      <input type="text" placeholder="연락처" name="studentPhone">
+      <input type="text" placeholder="특이사항" name="studentMemo"><br>
+      <br><h2>비상연락망</h2>
+          <input type="text" placeholder="연락처"name="familyPhone"><br>
+          <input type="text" placeholder="관계" name="familyRel"><br>
+          <input type="text" placeholder="나이" name="familyAge"><br>
+      <br>
+      <label>활성여부 : </label>
+         <select name="studentStatus">
+            <option value="Y">Y</option>
+            <option value="N">N</option>
+         </select>
+      <input type="date" id="date" name="studentRegist">
+     </div>
+        <input type="submit" value="등록">
+    </form>
+</body>
+</html>

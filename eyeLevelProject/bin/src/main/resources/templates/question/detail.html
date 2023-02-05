@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>상세 페이지</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/question.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+	
+<div class="outer">	
+	<div th:replace="main/navbar.html"></div>
+	
+	<div class="boxing">
+		<form id="boardInfo" th:action="@{/question/contentModifyAndDelete/} + ${question.questionNo}" method="post" align="center">
+			<table id="listAreaForContent" align="center">
+				<tr>
+					<th>
+						<!-- 관리자, 선생님만 삭제 가능 -->
+						<th:block sec:authorize="hasAnyRole('ADMIN', 'TEACHER')">
+							<input type="submit" value="삭제" name="btn" id="deleteBtn">
+						</th:block>
+					</th>
+					<th th:text="${question.questionName}"></th>
+					<th id="isComplete">
+						<th:block sec:authorize="hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')">
+						<input type="button" name="btn" th:if="${question.questionCom} == 'Y'" disabled value="답변완료">
+						</th:block>
+						<th:block sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER')">
+						<input type="submit" name="btn" th:if="${question.questionCom} == 'N'" value="답변미완" id="tc">
+						</th:block>
+						<th:block sec:authorize="hasRole('ADMIN')">
+						<input type="button" name="btn" th:if="${question.questionCom} == 'N'" value="답변미완">
+						</th:block>
+						<th:block sec:authorize="!hasRole('ADMIN') and !hasRole('TEACHER') and hasRole('STUDENT')">
+						<input type="button" name="btn" th:if="${question.questionCom} == 'N'" value="답변미완">
+						</th:block>
+					</th>
+				</tr>
+				<tr>
+					<td th:text="${question.student.studentName}"></td>
+					<td></td>
+					<td th:text="${question.questionDate}"></td>
+				</tr>
+				<tr>
+					<td colspan="3" th:utext="${question.questionContent}" style="height: 250px;"></td>
+				</tr>
+			</table>
+		</form>
+
+		<th:block th:each="answer : ${answerList}">
+		<form id="answerList" th:action="@{/question/answerDelete/} + ${answer.questionNo} + @{/} + ${answer.answerNo}" method="post">
+			<table id="listAreaForAnswer" align="center">
+				<th:block th:each="teacher : ${answer.teacherList}">
+					<!-- 관리자 : 댓글 삭제 -->
+					<th:block sec:authorize="hasRole('ADMIN')">
+					<tr>
+						<th colspan="1" th:text="${teacher.teacherName}"></th>
+						<th>
+							<input type="submit" value="삭제" id="btn" name="btn">
+						</th>
+					</tr>
+					<tr><td colspan="2" th:text="${answer.answerContent}"></td></tr>
+					</th:block>
+					<!-- 작성 교사 : 댓글 삭제 및 수정 -->
+					<th:block sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER')" th:if="${#authentication.principal.teacherNo} == ${answer.teacherNo}">
+					<tr>
+						<th colspan="1" th:text="${teacher.teacherName}"></th>
+						<th>
+							<input type="button" value="수정" name="btn" onclick="modifyFun(this)">
+							<input type="submit" value="삭제" name="btn">
+						</th>
+					</tr>
+					<tr>
+						<td colspan="2" th:text="${answer.answerContent}"></td>
+					</tr>
+					</th:block>
+					<!-- 작성자가 아닌 교사 -->
+					<th:block sec:authorize="!hasRole('ADMIN') and hasAnyRole('TEACHER')" th:if="${#authentication.principal.teacherNo} != ${answer.teacherNo}">
+					<tr>
+						<th colspan="2" th:text="${teacher.teacherName}"></th>
+					</tr>
+					<tr><td colspan="2" th:text="${answer.answerContent}"></td></tr>
+					</th:block>
+					<!-- 학생 -->
+					<th:block sec:authorize="!hasAnyRole('ADMIN', 'TEACHER')">
+					<tr>
+						<th colspan="2" th:text="${teacher.teacherName}"></th>
+					</tr>
+					<tr><td colspan="2" th:text="${answer.answerContent}"></td></tr>
+					</th:block>
+				</th:block>
+				<tr><td colspan="2" th:text="${answer.answerDate}"></td></tr>
+			</table>
+		</form>
+		</th:block>
+		
+		<!-- 관리자 로그인 시 댓글 작성은 보이지 않음 -->
+		<th:block sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER') and hasRole('STUDENT')">
+		<form id="answerRegiet" th:action="@{/question/answerRegist/} + ${question.questionNo}" method="post" align="center">
+			<table id="answerRegistTable" align="center">
+				<tr>
+					<th th:text="${#authentication.principal.teacherName}"></th>
+					<th><input type="submit" value="등록" id="btn"></th>
+				</tr>
+				<tr>
+					<td colspan="2"><textarea name="answerContent" placeholder="댓글을 입력해주세요." style="height: 150px;"></textarea></td>
+				</tr>
+			</table>
+		</form>
+		</th:block>
+	</div>	
+</div>	
+
+	<script type="text/javascript">
+		/* 댓글 등록 성공 시 안내 메세지 */
+		const successMessage = "[[${successMessage}]]";
+		successMessage && alert(successMessage);	
+		
+		/* 답변완료 처리 시 안내 메세지 */
+		const completeSuccessMessage = "[[${completeSuccessMessage}]]";
+		completeSuccessMessage && alert(completeSuccessMessage);	
+		
+		/* 댓글 및 게시글 수정 성공 시 안내 메세지 */
+		const modifySuccessMessage = "[[${modifySuccessMessage}]]";
+		modifySuccessMessage && alert(modifySuccessMessage);
+		
+		/* 댓글 삭제 성공 시 안내 메세지 */
+		const deleteSuccessMessage = "[[${deleteSuccessMessage}]]";
+		deleteSuccessMessage && alert(deleteSuccessMessage);
+		
+		/* 관리자가 답변미완 버튼을 누를 경우 안내 메세지 출력 */
+		const isComplete = document.getElementById("isComplete").children[0];
+		if(isComplete.value == "답변미완" && isComplete.id != "tc") {
+			isComplete.onclick = function() {
+			alert("교사만 답변완료 처리를 할 수 있습니다.");
+			}
+		} 
+		if(isComplete.value == "답변완료") {
+			/* 답변완료인 경우 게시글 삭제 불가 (삭제 버튼 비활성화) */
+			const deleteBtn = document.getElementById("deleteBtn");
+			deleteBtn.disabled = true;
+		}
+
+		/* 댓글 수정 로직 */
+		function modifyFun(modifyBtn) {
+			const modifyArea = modifyBtn.parentNode;
+			const modifyTextArea = modifyArea.parentNode.nextElementSibling;
+			const oldText = modifyTextArea.children[0].innerText;
+			/* 수정 삭제 버튼 제거 후 저장 버튼 생성 */
+			modifyArea.innerHTML = '';
+			modifyArea.insertAdjacentHTML('beforeend', '<input type="submit" value="저장" name="btn" id="updateBtn">');
+			/* textarea 생성 */
+			modifyTextArea.innerHTML = '';
+			modifyTextArea.insertAdjacentHTML('beforeend', '<td colspan="2" ><textarea name="answerContent" cols="30" rows="10">[[${oldText}]]</textarea></td>');
+			const answerContent = document.getElementsByName("answerContent")[0];
+			answerContent.value = oldText;
+		}
+	</script>
+</body>
+</html>

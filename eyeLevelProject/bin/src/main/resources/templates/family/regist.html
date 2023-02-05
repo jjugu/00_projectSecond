@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="common/header.html"></div>
+	<h3 align="center">가족 등록</h3>
+	
+		<button onclick="location.href='/family/search'">가족 검색</button>
+		<button onclick="location.href='/family/regist'">가족 등록</button>
+		<button onclick="location.href='/family/modify'">가족 수정</button>
+		
+	<form action="/family/regist" method="post" align="center">	<!-- 부트에서는 default로 잡혀있는 최상위 루트가 '/'다. -->
+		<label>관계　　 : </label><input type="text" name="familyRel"><br>
+		<label>연락처　 : </label><input type="text" name="familyPhone"><br>
+		<label>나이　　 : </label><input type="text" name="familyAge"><br>
+		<label>학번　　 : </label><input type="text" name="studentNo.studentNo"><br>
+		<input type="submit" value="전송">
+	</form>
+</body>
+</html>

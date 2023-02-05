@@ -1,0 +1,271 @@
+@charset "UTF-8";
+
+/* 검색창 */
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+input#name {
+    width: 250px;
+    height: 35px;
+    background-color: #f8f8f8;
+    border: 1px solid #d9d9d9;
+    border-radius: 30px;
+    font-size: 1em;
+    text-align: center;
+    font-family: 'Pretendard-Regular';
+    margin-right: 5px;
+	
+}
+
+select {
+    width: 80px;
+    height: 35px;
+    background-color: white;
+    border: 1px solid #646464;
+    border-radius: 30px;
+    font-size: 1em;
+    text-align: center;
+    margin: 0 10px 0 0;
+    font-family: 'Pretendard-Regular';
+}
+
+.btn-bs {
+    width: 80px;
+    height: 35px;
+    border-radius: 20px;
+    background-color : #646464;
+    color: white;
+    border: 0px;
+    font-size: 1em;
+    margin: 0 5px 0 5px;
+    font-family: 'Pretendard-Regular';
+}
+
+table#listArea {
+	border-collapse: collapse;
+	border-spacing: 0;
+	max-width: 900px;
+	width : 80%;
+	margin-bottom: 30px;
+}
+
+/* 교사 목록 */
+.boxing {
+	display: flex;
+    flex-direction: column;
+}
+
+table#listArea th {
+	border-color: #d9d9d9;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+	background-color: #f8f8f8;
+}
+
+table#listArea td {
+	border-color: #d9d9d9;
+	border-style: solid;
+	border-width: 1px;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	overflow: hidden;
+	padding: 10px 5px;
+	word-break: normal;
+    text-align: center;
+}
+
+.search-area {
+	margin-top: 30px;	
+}
+
+/* 상세 페이지 */
+.btn-detail {
+    width: 100px;
+    height: 25px;
+    border-radius: 20px;
+    background-color : #646464;
+    color: white;
+    border: 0px;
+    font-size: 0.9em;
+    margin: 0 5px 0 5px;
+    font-family: 'Pretendard-Regular';
+}
+
+.btn-detail:hover {
+    opacity: 20%;
+}
+
+.btn-detail2 {
+    width: 100px;
+    height: 25px;
+    border-radius: 20px;
+    background-color : #d9d9d9;
+    color: white;
+    border: 0px;
+    font-size: 0.9em;
+    margin: 0 5px 0 5px;
+    font-family: 'Pretendard-Regular';
+}
+
+.boxingDetail {
+	display: flex;
+    justify-content: space-around;
+}
+
+table.detailPageTable {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width : 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.detailPageTable th {
+	width: 300px;
+    height: 50px;
+	border-color: #d9d9d9;
+	border-style: solid;
+	border-width: 1px;
+    background-color: #f8f8f8;
+   	font-size: 16px;
+	overflow: hidden;
+	word-break: normal;
+	margin: auto;
+}
+
+table.detailPageTable td {
+	width: 300px;
+    min-height: 50px;
+	border-color: #d9d9d9;
+	border-style: solid;
+	border-width: 1px;
+	font-size: 16px;
+	overflow: hidden;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.thumbnailInput {
+	display: none;
+}
+
+#profileImgView {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+#profileImg {
+	width: 150px;
+    height: 200px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.areaInput Input {
+	width: 250px;
+	margin-bottom: 5px;
+}
+
+.areaInput textarea {
+	width: 250px;
+	height: 35px;
+	white-space: pre-wrap;
+}
+
+.areaInput textarea::placeholder {
+    color: crimson;
+}
+
+/* 버튼을 따로 제작하지 않을 경우 */
+#uploadDiv:hover + #uploadInfo {
+    display: block;
+}
+
+#uploadInfo {
+    padding: 15px 20px;
+    background-color: #646464;
+    border-radius: 5px;
+    color: #ffffff;
+    position: absolute;
+    margin-bottom: 80px;
+    display: none;
+}
+
+/* 버튼을 따로 제작할 경우 */
+/* #uploadDiv {
+	width: 80px;
+    height: 30px;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+    margin-left: 20px;
+    margin-bottom: 10px;
+} */
+
+
+/* 비밀번호 변경 테이블 */
+table.changePwdTable th {
+	width: 300px;
+    height: 50px;
+    border: 1px solid #d9d9d9;
+    background-color: #f8f8f8;
+}
+
+table.changePwdTable td {
+	width: 600px;
+    height: 50px;
+    border: 1px solid #d9d9d9;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.boxingPwd {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 100px;
+}
+
+#originPw{
+	height: 20px;
+}
+
+#newPw{
+	height: 20px;
+}
+#checkPw{
+	height: 20px;
+}
+
+.submitBtn {
+    width: 100px;
+    height: 35px;
+    border-radius: 20px;
+    background-color : #646464;
+    color: white;
+    border: 0px;
+    font-size: 0.9em;
+    margin: 50px 5px 0 5px;
+    font-family: 'Pretendard-Regular';
+}
+
+.submitBtn:hover {
+    opacity: 20%;
+}

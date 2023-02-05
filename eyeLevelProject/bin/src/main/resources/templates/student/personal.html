@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/student.css">
+
+
+  
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+	<div th:replace="main/navbar.html"></div>
+	
+	<form action="/student/modifypersonal" method="post" align="center">
+	<!-- 회원정보 출력과 수정을 동시에 하기 위해 form태그로 modify를 one.html으로 가져 옴 -->
+	<input type="hidden" th:name="studentNo" th:value="${ student.studentNo }" readonly align="center">
+	<!-- modify의 pk값을 자동으로 입력하기 위해 input태그에 studentNo로 밸류를 걸고 히든 타입 및 readonly로 안전성 강화 -->
+	
+	<table align="center" border="1">
+		<tr><th colspan="2">학생 정보 </tr>
+		<tr><th>학번</th><td th:text="${ student.studentNo }"></td></tr> <!-- 일반적인 정보 출력 -->
+		<tr><th>이름</th><td th:text="${ student.studentName }"></td></tr>
+		<tr><th>성별</th><td th:text="${ student.studentGender }"></td></tr>
+		<tr><th>아이디</th><td th:text="${ student.studentId }"></td></tr>
+		
+	    <tr>
+	    	<th style="padding-left: 20px;">비밀번호<button type="button" id="passwordToggle" class="readonly-toggle" style="margin: 10px;">변경</button></th>
+		   	<td>
+		       	<input id="password" type="password" readonly th:name="studentPw" th:placeholder="${ student.studentPw }"
+		       	th:value="${ student.studentPw }" style="width: 99%; border: none; text-align: center; font-size: 16px;">
+		    </td>
+	    </tr>
+	    
+	    <tr>
+		    <th style="padding-left: 20px;">비밀번호 확인</th>
+		    <td>
+		    	<input id="confirmPassword" type="password" th:name="studentPw" th:placeholder="${ student.studentPw }"  th:value="${ student.studentPw }"
+		    	style="width: 99%; border: none; text-align: center; font-size: 16px;">
+		    	<div id="errorMessage" style="color: red;"></div>
+		    	<div id="successMessage" style="color: green;"></div>
+		    </td>
+	    </tr>
+	    
+		<tr><th>지역번호</th><td th:text="${ student.areaNo }"></td></tr>
+
+		<tr>
+			<th style="padding-left: 20px;">주소<button type="button" id="addressToggle" class="readonly-toggle" style="margin: 10px;">변경</button></th>
+			<td>
+				<input id="address" type="text" readonly th:name="studentAddress"
+ 				th:placeholder="${ student.studentAddress }" th:value="${ student.studentAddress }"
+ 				style="width: 99%; border: none;  text-align: center; font-size: 16px;">
+			</td>
+		</tr>
+		
+		<tr>
+			<th style="padding-left: 20px;">연락처<button type="button" id="phoneToggle" class="readonly-toggle" style="margin: 10px;">변경</button></th>
+			<td>
+  				<input id="phone" type="text" readonly th:name="studentPhone"
+  				th:placeholder="${ student.studentPhone }" th:value="${ student.studentPhone }"
+  				style="width: 99%; border: none;  text-align: center; font-size: 16px;">
+ 			</td>
+		</tr>
+		
+		<tr><th>등록일자</th><td th:text="${ #dates.format(student.studentRegist, 'yyyy년 MM월 dd일') }"></td></tr>
+		<tr><th colspan="2">가족 정보 1</th></tr>
+		<tr>
+			<th>관계</th>
+			<td th:if="${#lists.size(familyList) < 1}"></td>
+			<td th:if="${#lists.size(familyList) >= 1}" th:text="${ familyList[0].familyRel }"></td>
+		</tr>
+		<tr>
+			<th>나이</th>
+			<td th:if="${#lists.size(familyList) < 1}"></td>
+			<td th:if="${#lists.size(familyList) >= 1}" th:text="${ familyList[0].familyAge }"></td>	
+		</tr>
+		<tr>
+			<th>연락처</th>
+			<td th:if="${#lists.size(familyList) < 1}"></td>
+			<td th:if="${#lists.size(familyList) >= 1}" th:text="${ familyList[0].familyPhone }"></td>	
+		</tr>
+		<tr><th colspan="2">가족 정보 2</th></tr>
+		<tr>
+			<th>관계</th>
+			<td th:if="${#lists.size(familyList) != 2}"></td>
+			<td th:if="${#lists.size(familyList) == 2}" th:text="${ familyList[1].familyRel }"></td>
+		</tr>
+		<tr>
+			<th>나이</th>
+			<td th:if="${#lists.size(familyList) != 2}"></td>
+			<td th:if="${#lists.size(familyList) == 2}" th:text="${ familyList[1].familyAge }"></td>	
+		</tr>
+		<tr>
+			<th>연락처</th>
+			<td th:if="${#lists.size(familyList) != 2}"></td>
+			<td th:if="${#lists.size(familyList) == 2}" th:text="${ familyList[1].familyPhone }"></td>	
+		</tr>
+	</table>
+	<button type=submit>변경 저장</button>
+</form>
+
+<script>
+	$('#addressToggle').click(function() { // #addressToggle을 click시 익명 함수가 실행 됨
+  		$(this).toggleClass('active'); // toggleClass(): 선택한 클래스가 있으면 없게 없으면 있게 하는 명령어
+  	$('#address').prop('readOnly', !$(this).hasClass('active')); // hasClass(): 선택한 요소에 클래스가 있는지 확인하고 불린값 반환
+	});
+	
+	$('#phoneToggle').click(function() { 
+  		$(this).toggleClass('active');
+  	$('#phone').prop('readOnly', !$(this).hasClass('active'));
+	});
+	
+	$('#passwordToggle').click(function() {
+		$(this).toggleClass('active');
+	$('#password').prop('readOnly', !$(this).hasClass('active'));
+	});
+	
+	$('form').submit(function(event) {
+		const password = $('#password').val();
+		const confirmPassword = $('#confirmPassword').val();
+    	if (password !== confirmPassword) {
+        	$('#errorMessage').text('비밀번호가 일치하지 않습니다.');
+        	event.preventDefault();	// 제출되지 않도록 막는 것
+      }
+    });
+	const successMessage = "[[${ modifySuccessMessage }]]";	
+	if(successMessage){alert(successMessage);
+	}
+</script>
+
+</body>
+</html>

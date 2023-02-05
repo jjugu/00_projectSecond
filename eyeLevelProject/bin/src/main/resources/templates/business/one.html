@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">		
+<title>IO푹곡 학습 상세 조회</title>
+</head>
+<body>
+	<script>
+		const successMessage = "[[${ modifySuccessMessage }]]";	
+		
+		if(successMessage){
+			alert(successMessage);
+		}
+	</script>
+	<div th:replace="common/header.html"></div>
+		<h3 align="center">학습현황 상세 조회</h3>
+	<table align="center" border="1">
+		<tr>
+			<th>학습일자</th>
+			<th>학번</th>
+			<th>메모</th>
+			<th>교번</th>
+			<th>학습지코드</th>		
+		</tr>
+		<tr th:each="business : ${ businessList }">
+			<td th:text="${ business.businessDate }"></td>
+			<td th:text="${ business.studentNo }"></td>
+			<td th:text="${ business.businessMemo }"></td>
+			<td th:text="${ business.teacherNo }"></td>
+			<td th:text="${ business.paperNo }"></td>
+		</tr>
+		
+	</table>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/board.css">
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+		
+	<div th:replace="main/navbar.html"></div>
+	
+	<form id="boardInfo" action="/board/contentModify" method="get" align="center">
+		<table id="boardInfoTable">
+			<tr>
+				<th><input type="submit" value="삭제" id="deleteBtn1" disabled></th>
+				<th><input th:text="${board.boardName}"></th>
+				<th><input type="submit" value="저장" id="submitBtn1"></th>
+			</tr>
+			<tr>
+				<td colspan="3" th:text="${board.boardContent}"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

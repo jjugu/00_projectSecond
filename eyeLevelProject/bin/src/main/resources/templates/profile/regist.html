@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        .container {
+          max-width: 500px;
+          margin: 60px auto;
+          text-align: center;
+        }
+        form {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
+        input[type="text"],
+        input[type="email"], 
+        input[type="password"] {
+          width: 60%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          box-sizing: border-box;
+          border: 2px solid #ccc;
+          border-radius: 30px;
+        }
+        input[type="submit"] {
+          width: 30%;
+          background-color: #BE1E2D;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+        }
+        input[type="submit"]:hover {
+          background-color: #45a049;
+        }
+</style>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+	<div th:replace="main/navbar.html"></div>
+</head>
+
+</body>
+<body>
+      <form action="/profile/regist" method="post">
+    <div class="container">
+      <h1>입력사항</h1>
+        <input type="text" placeholder="교번" name="teacherNo" />
+        <input type="text" placeholder="이름" name="teacherName" />
+        <input type="text" placeholder="주소" name="teacherAddress" />
+        <input type="email" placeholder="이메일" name="teacherPhone" />
+        <input type="text" placeholder="아이디" name="teacherId" />
+        <input type="password" placeholder="비밀번호" name="teacherPw" />
+        <input type="text" placeholder="최종학력" name="teacherLevel" />
+        <input type="text" placeholder="PR" name="teacherPr" /><br>
+        <input type="submit" value="등록" />
+    </div>
+      </form>
+  </body>
+</html>

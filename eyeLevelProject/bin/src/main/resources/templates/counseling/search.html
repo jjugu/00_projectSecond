@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/studentSearch.css">
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+		
+	<div th:replace="main/navbar.html"></div>
+
+		
+	<table align="center" border="1">
+
+		<tr>
+			<th>번호</th>
+			<th>연락처</th>
+			<th>내용</th>
+			<th>과목</th>
+			<th>답변여부</th>
+		</tr>
+		<tr th:each="counseling : ${ counselingList }">
+			<td style="width: 50px;"><a th:href="${ counseling.counselingNo }">[[${ counseling.counselingNo }]]</a></td>
+			<td style="width: 120px;"><a th:href="${ counseling.counselingNo }">[[${ counseling.counselingPhone }]]</a></td>
+			<td style="width: 900px;"><a th:href="${ counseling.counselingNo }">[[${ counseling.counselingSt }]]</a></td>
+			<td style="width: 50px;"><a th:href="${ counseling.counselingNo }">[[${ counseling.categoryNo.categoryName }]]</a></td>
+			<td style="width: 80px;"><a th:href="${ counseling.counselingNo }">[[${ counseling.counselingCom }]]</a></td>
+		</tr>
+	</table>
+
+    <div th:replace="counseling/paging.html"></div>
+
+	<!-- 검색 폼 -->
+	<div class="search-area" align="center">
+		<form id="loginForm" action="/counseling/search" method="get" style="display: inline-block">
+				<select th:with="searchCondition = ${selectCriteria.searchCondition}" id="searchCondition" name="searchCondition">
+					<option value="categoryName" th:selected="${ searchCondition } == 'categoryName'">과목</option>
+				</select> 
+			<input type="hidden" name="currentPage" value="1">
+			<input type="search" id="name" name="searchValue" th:value="${selectCriteria.searchValue}">
+			<button class="btn btn-bs" type="submit">검색</button>
+		</form>
+	</div>
+</body>
+</html>

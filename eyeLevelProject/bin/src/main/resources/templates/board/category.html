@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/board.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+	
+<div class="outer">				
+	<div th:replace="main/navbar.html"></div>
+	
+	<!-- [주의] 리스트의 경우 each문 미작성 시 에러 발생 -->
+	<div class="boxing">
+		<th:block th:each="categorys : ${categoryAndBoardList}">
+			<table id="listArea" align="center">
+				<!-- 해당 게시판 입장을 위한 id 부여 -->
+				<tr th:id="${categorys.categoryCode}">
+					<th colspan="4" th:text="${categorys.categoryName}"></th>
+				</tr>
+				<tr id="headLine">
+					<th>게시글 번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성 일자</th>
+				</tr>
+				<th:block th:if="${stat.index < 3}" th:each="category, stat : ${categorys.boardInfo}">
+					<!-- 해당 게시글 입장을 위한 id 부여 -->
+					<tr th:id="${categorys.categoryCode}">
+						<td th:text="${category.boardNo}"></td>
+						<td th:text="${category.boardName}"></td>
+						<th:block th:each="teacherInfo : ${category.teacherInfo}">
+							<td th:text="${teacherInfo.teacherName}"></td>
+						</th:block>
+						<td th:text="${category.boardDate}"></td>
+					</tr>
+				</th:block>
+			</table>
+		</th:block>
+	</div>
+</div>
+	
+	<script type="text/javascript">
+		$(function(){
+			$("#listArea tr").hover(function(){
+				if($(this)[0]['id'] != "headLine") {
+					$(this).children().css({"background" : "#d9d9d9", "cursor" : "pointer"});
+				}
+			},function(){
+				if($(this)[0]['id'] != "headLine" && $(this).children()[0]['nodeName'] != "TH") {
+					// console.log($(this).children()[0]['nodeName'])
+					$(this).children().css("background", "white");
+				} else if($(this).children()[0]['nodeName'] == "TH") {
+					$(this).children().css("background", "#f8f8f8");
+				}
+			}).click(function(){
+				const categoryCode = $(this)[0]['id'];
+				const nodeName = $(this).children()[0]['nodeName'];
+				const boardNo = $(this).children(":eq(0)").text();
+
+				/* 카테고리 목록 이동 */
+				if(categoryCode != "headLine" && nodeName == "TH") {
+					location.href = "searchList/" + categoryCode;
+				}
+
+				/* 게시글 상세페이지 이동 */
+				if(categoryCode != "headLine" && nodeName == "TD") {
+					location.href = "searchList/" + categoryCode + "/detail/" + boardNo;
+				}
+			})
+		})
+	</script>
+</body>
+</html>

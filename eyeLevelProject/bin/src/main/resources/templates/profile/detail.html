@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<title>마이페이지</title>
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/profile.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+
+<div class="outer">		
+	<div th:replace="main/navbar.html"></div>
+	
+	<div class="boxingDetail">
+		<form action="/profile/modifyAndDelete" method="post" id="profileTable" align="center" enctype="multipart/form-data">
+			<table id="detailPage" class="detailPageTable">
+				<tr>
+					<th colspan="3">
+						<div style="display:flex; align-items: center; justify-content: space-around;">
+						<input sec:authorize="hasRole('ADMIN')" type="submit" value="삭제" name="btn" id="deleteBtn" class="btn-detail">
+						<input sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER')" type="button" th:if="${profile.teacherEnt} == 'Y'" value="퇴사" class="btn-detail2" disabled>
+						<input sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER')" type="button" th:if="${profile.teacherEnt} == 'N'" value="재직" class="btn-detail2" disabled>
+						개인 정보
+						<input type="submit" value="수정" name="btn" id="submitBtn" class="btn-detail">
+						</div>
+					</th>
+				</tr>
+				<tr>
+					<th>교번</th>
+					<td colspan="1">
+						<input type="text" name="teacherNo" th:value="${profile.teacherNo}" disabled>
+						<input type="hidden" name="teacherNo" th:value="${profile.teacherNo}">
+					</td>
+					<td colspan="1" rowspan="4">
+						<div id="profileImgView">
+							<div id="uploadDiv">
+								<img id="profileImg" th:if="${profile.teacherPicture != null}" th:src="${profile.teacherPicture}"/>
+								<img id="profileImg" th:if="${profile.teacherPicture == null}" src="http://lightin9.speedgabia.com/90_koodoyeon/team_project_eyelevel/test_file/registImg.png"/>
+							</div>
+							<span id="uploadInfo">jpeg, png 파일만 업로드 가능합니다.</span>
+						</div>
+					</td>
+				</tr>
+				<tr sec:authorize="hasRole('ADMIN')">
+					<th>재직여부</th>
+					<td colspan="1">
+						<input type="text" name="teacherEntValue" th:if="${profile.teacherEnt} == 'N'" value="재직" disabled style="width: 55px;">
+						<input type="submit" name="btn" th:if="${profile.teacherEnt} == 'N'" value="퇴사처리" id="isEntChange" class="btn-detail">
+						<input type="text" name="teacherEntValue" th:if="${profile.teacherEnt} == 'Y'" value="퇴사" disabled style="width: 170px;">
+					</td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td colspan="1">
+						<input type="text" name="teacherName" th:value="${profile.teacherName}" disabled>
+						<input type="hidden" name="teacherName" th:value="${profile.teacherName}">
+					</td>
+				</tr>
+				<tr>
+					<th>아이디</th>
+					<td colspan="1">
+						<input type="text" name="teacherId" th:value="${profile.teacherId}" disabled>
+						<input type="hidden" name="teacherId" th:value="${profile.teacherId}">
+					</td>
+				</tr>
+				
+	<!-- 교사 계정 -->
+				<tr sec:authorize="!hasRole('ADMIN') and hasRole('TEACHER') and hasRole('STUDENT')">
+					<th>비밀번호</th>
+					<td colspan="1"><input type="button" onclick="location.href='/profile/modifyPwd'" value="비밀번호 수정" class="btn-detail"></td>
+				</tr>
+	<!-- 교사 계정 -->
+				<tr>
+					<th>주소</th>
+					<td colspan="2"><input type="text" name="teacherAddress" th:value="${profile.teacherAddress}"></td>
+				</tr>
+				<tr>
+					<th>연락처</th>
+					<td colspan="2"><input type="tel" name="teacherPhone" th:value="${profile.teacherPhone}"></td>
+				</tr>
+				<tr>
+					<th>이메일</th>
+					<td colspan="2"><input type="email" name="teacherEmail" th:value="${profile.teacherEmail}"></td>
+				</tr>
+				<tr>
+					<th>최종학력</th>
+					<td colspan="2"><input type="text" name="teacherLevel" th:value="${profile.teacherLevel}"></td>
+				</tr>
+				<tr>
+					<th>PR멘트</th>
+					<td colspan="2">
+						<textarea name="teacherPr" id="teacherPr" cols="30" rows="10" th:utext="${profile.teacherPr}" style="width:175px; height: 70px;"></textarea>
+					</td>
+				</tr>		
+				<tr>
+		            <th rowspan="3">교습 지역</th>
+		            <th:block th:if="${profile.areaList.size == 0}">
+			            <td colspan="2">
+			               <input type="text" name="inputA" placeholder="교습 지역을 추가해 주세요."><br>
+			               <input type="text" name="inputB" placeholder="교습 지역을 추가해 주세요."><br>
+			               <input type="text" name="inputC" placeholder="교습 지역을 추가해 주세요."><br>
+			            </td>
+					</th:block>	
+		            <th:block th:if="${profile.areaList.size == 1}">
+			            <td colspan="2">
+			               <input type="text" name="inputA" th:value="${profile.areaList[0].colunmNo}"><br>
+			               <input type="text" name="inputB" placeholder="교습 지역을 추가해 주세요."><br>
+			               <input type="text" name="inputC" placeholder="교습 지역을 추가해 주세요."><br>
+			            </td>
+					</th:block>	
+		            <th:block th:if="${profile.areaList.size == 2}">
+			            <td colspan="2">
+			               <input type="text" name="inputA" th:value="${profile.areaList[0].colunmNo}"><br>
+			               <input type="text" name="inputB" th:value="${profile.areaList[1].colunmNo}"><br>
+			               <input type="text" name="inputC" placeholder="교습 지역을 추가해 주세요."><br>
+			            </td>
+					</th:block>	
+		            <th:block th:if="${profile.areaList.size == 3}">
+			            <td colspan="2">
+			               <input type="text" name="inputA" th:value="${profile.areaList[0].colunmNo}"><br>
+			               <input type="text" name="inputB" th:value="${profile.areaList[1].colunmNo}"><br>
+			               <input type="text" name="inputC" th:value="${profile.areaList[2].colunmNo}"><br>
+			            </td>
+					</th:block>	
+	         	</tr>
+		   	</table>  
+	 	<!-- 사진 업로드 input 태그 -->
+			<div class="thumbnailInput">
+				<input type="file" name="files" id="uploadInputTag" onchange="loadImg(this)">
+			</div> 
+	    </form>
+   	</div>
+</div>	   	
+    
+   	<script type="text/javascript">
+		/* 수정 성공 시 안내 메세지 */
+		const successMessage = "[[${successMessage}]]";
+		successMessage && alert(successMessage);
+
+		/* 엔터키로 제출되는 것을 방지하는 로직 */
+		const preventEnter = document.getElementById("profileTable");
+		preventEnter.addEventListener("keydown", e => {
+			if(e.key == "Enter") e.preventDefault();
+		})
+
+		/* 퇴사 여부 확인 안내창 */
+		// $(function() {
+		$('#isEntChange').click(function() {
+			if(!confirm('정말 퇴사처리 하시겠습니까?')) {
+				alert("퇴사처리가 취소되었습니다.")
+				return false;
+			}
+		})
+		// })
+		
+		/* 퇴사 여부에 따른 삭제 버튼 노출(퇴사 처리 선수행) 및 안내창 */
+		const submitBtn = document.getElementById("submitBtn");
+		const teacherEnt = "[[${profile.teacherEnt}]]";
+		if (teacherEnt == "N") {
+			const deleteBtn = submitBtn.parentNode.children;
+			if(deleteBtn['id'] == "deleteBtn") {
+				deleteBtn.disabled = true;
+			}
+		}
+		
+		$(function() {
+			$('#deleteBtn').click(function() {
+				if(!confirm('정말 계정을 삭제하시겠습니까?\n복구가 불가합니다.')) {
+					// alert("퇴사처리가 취소되었습니다.")
+					return false;
+				}
+			})
+		})
+		
+		/* 사진 업로드를 위한 로직 */
+		const uploadDiv = document.getElementById("uploadDiv");
+		const uploadInputTag = document.getElementById("uploadInputTag");
+		const profileImg = document.getElementById("profileImg");
+
+		// div 클릭시 input 태그 발동을 위한 로직
+		uploadDiv.onclick = function() {
+			uploadInputTag.click();
+		}
+
+		// 썸네일 노출 및 파일 업로드를 위한 로직 (파일 타입 확인 / 안내 메세지 출력)
+		function loadImg(value) {
+
+			if(value.files[0].type == "image/jpeg" || value.files[0].type == "image/png") {
+				if(value.files && value.files[0]) {
+					const reader = new FileReader();
+					reader.onload = function(e) {
+						profileImg.src = e.target.result;
+					}
+					reader.readAsDataURL(value.files[0]);
+				}
+				alert("사진을 저장하시려면 상단의 수정 버튼을 눌러주세요.");
+			} else {
+				value = null;
+				alert("잘못된 형식 입니다.");
+				// 파일 형식이 잘못된 경우 값을 저장하지 않음
+				// console.log(value.files[0]);
+			}
+		}
+
+		/* 제출 확인용 버튼 */
+		$(function() {
+			$('#submitBtn').click(function() {
+				if(!confirm('수정사항을 저장하시겠습니까?')) {
+					alert("수정사항 반영이 취소되었습니다.")
+					return false;
+				}
+			})
+		})
+	</script>
+</body>
+</html>

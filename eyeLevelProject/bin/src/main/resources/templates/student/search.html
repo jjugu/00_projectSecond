@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/css/studentSearch.css">
+<style>
+
+
+</style>
+
+
+</head>
+<body>
+	<div th:replace="main/header.html"></div>
+		
+	<div th:replace="main/navbar.html"></div>
+	
+	<table align="center" border="1">
+		<tr>
+			<th>학번</th>
+			<th>이름</th>
+			<th>아이디</th>
+			<th>연락처</th>
+			<th>주소</th>
+		</tr>
+		<tr th:each="student : ${ studentList }">
+			<td><a th:href="${ student.studentNo }">[[${ student.studentNo }]]</a></td>
+			<td><a th:href="${ student.studentNo }">[[${ student.studentName }]]</a></td>
+			<td><a th:href="${ student.studentNo }">[[${ student.studentId }]]</a></td>
+			<td><a th:href="${ student.studentNo }">[[${ student.studentPhone }]]</a></td>
+			<td><a th:href="${ student.studentNo }">[[${ student.studentAddress }]]</a></td>
+		</tr>
+	</table>
+
+    <div th:replace="student/paging.html"></div>
+
+	<div class="search-area" align="center">
+		<form id="loginForm" action="/student/search" method="get" style="display: inline-block">
+				<select th:with="searchCondition = ${selectCriteria.searchCondition}" id="searchCondition" name="searchCondition">
+					<option value="studentNo" th:selected="${ searchCondition } == 'studentNo'">학번</option>
+					<option value="studentName" th:selected="${ searchCondition } == 'studentName'">이름</option>
+					<option value="studentId" th:selected="${ searchCondition } == 'studentId'">아이디</option>
+					<option value="studentAddress" th:selected="${ searchCondition } == 'studentAddress'">주소</option>
+				</select> 
+			<input type="hidden" name="currentPage" value="1">
+			<input type="search" id="name" name="searchValue" th:value="${selectCriteria.searchValue}">
+			<button class="btn btn-bs" type="submit">검색</button>
+		</form>
+	</div>
+	
+</body>
+</html>
